@@ -9,6 +9,7 @@ database = {}
 @app.route('/', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+
         # Get form data
         firstName = request.form['firstName']
         lastName = request.form['lastName']
@@ -21,22 +22,21 @@ def register():
             return render_template('register.html', errorMessage="Passwords do not match")
 
         # Check if the username already exists in the database
-        if email in database:
+        elif email in database:
             return render_template('register.html', errorMessage="email already registered")
+
+        else: 
+            # Store user details in the mock database
+            database[email] = {'firstName': firstName, 'lastName': lastName, 'password': password}
+            
+            # Redirect to login page
+            return redirect(url_for('login', email=email))
         
-        if not firstName or not lastName or not email or not password or not confirmPass:
-            return render_template('register.html', errorMessage="missing required field")
-        
-        
-        # Store user details in the mock database
-        database[email] = {'firstName': firstName, 'lastName': lastName, 'password': password}
-        
-        # Redirect to login page (Terence put url here)
-        return redirect(url_for(email=email))
-    
-    # For GET requests, display the registration form
     return render_template('register.html')
 
+@app.route('/login')
+def login():
+    return "registration successfull"
 
 if __name__ == '__main__':
     app.run(debug=True)
