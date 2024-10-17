@@ -17,8 +17,10 @@
         <input type="password" name="password" placeholder="Password" value="{{ user.password }}"><br><br>
         <input type="password" name="confirmPass" placeholder="Confirm Password" value="{{ user.password }}"><br><br>
 
-        <input type="submit" value="Save Changes">
-        <button type="reset">Discard Changes</button>
+        <div class="form-actions">
+            <button type="submit" name="action" value="Save Changes">Save Changes</button>
+            <button type="submit" name="action" value="Discard Changes">Discard Changes</button>
+        </div>
 
          <!-- Display error message if there's an issue -->
          {% if error_message %}

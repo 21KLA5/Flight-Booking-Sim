@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -24,6 +24,8 @@ def profile(email):
     error_message = None
 
     if request.method == 'POST':
+        action = request.form.get('action')
+
         if request.form.get('action') == 'Save Changes':
             first_name = request.form['firstName']
             last_name = request.form['lastName']
@@ -46,7 +48,7 @@ def profile(email):
                 # Save successful, redirect to index
                 return redirect(url_for('index'))
 
-        elif request.form.get('action') == 'Discard Changes':
+        elif action == 'Discard Changes':
             # Discard changes and redirect to index
             return redirect(url_for('index'))
 
