@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+import unittest
 
 app = Flask(__name__)
 
@@ -16,6 +17,10 @@ def register():
         email = request.form['email']
         password = request.form['password']
         confirmPass = request.form['confirmPass']
+
+        #Check if fields are empty 
+        if not firstName or not lastName or not email or not password or not confirmPass:
+            return render_template('register.html', errorMessage="Fill out all fields")
 
         #Check if passwords match
         if password != confirmPass:

@@ -12,30 +12,33 @@
         <div class="form-row">
             <input type="text" id="firstName" name="firstName" placeholder="First Name"><br><br>
 
-            <input type="text" id="lastName" name="lastName" placeholder="Last Name" required><br><br>
+            <input type="text" id="lastName" name="lastName" placeholder="Last Name"><br><br>
+        </div> 
+
+        <div class="form-row">
+            <input type="email" id="email" name="email" placeholder="Email"><br><br>
         </div>
-       
 
-
-        <input type="email" id="email" name="email" placeholder="Email"><br><br>
-
-
-        <input type="password" id="password" name="password" placeholder="Password"><br><br>
-
-
-        <input type="password" id="confirmPass" name="confirmPass" placeholder="Confirm Password:"><br><br>
-
-        <input type="submit" value="Register">
-
-        <p>Already registered?</p>
-        <form action="{{ url_for('login') }}" method="GET">
-            <button type="submit">Go to Login</button>
-        </form>
+        <div class="form-row">
+            <input type="password" id="password" name="password" placeholder="Password"><br><br>
+        </div>
+        
+        <div class="form-row">
+            <input type="password" id="confirmPass" name="confirmPass" placeholder="Confirm Password:"><br><br>
+        </div>
+        
+        <div class="form-row">
+            <input type="submit" value="Register">
+                <button action="{{ url_for('login') }}" method="GET" type="submit">Go to Login</button>
+        </div>
+         
+        <div class="form-row">
+            {% if errorMessage %}
+                <h3>{{ errorMessage }}!</h3>
+            {% endif %}
+        </div>
 
     </form>
 
-    {% if errorMessage %}
-        <h2>{{ errorMessage }}!</h2>
-    {% endif %}
 </body>
 </html>

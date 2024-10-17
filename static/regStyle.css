@@ -16,38 +16,33 @@ form {
     margin-bottom: 20px;
     background-color: white;
     border-radius: 0px;
-    padding: 30px;
+    padding: 20px 30px 30px 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 800px;
+    width: 700px;
+    height: 500px
 }
 
 .form-row{
     display: flex;
     align-items: center;
     margin-bottom: 15px;
+    justify-content: center;
+    gap: 20px;
 }
 
 /* Style for heading */
 h2 {
     text-align: center;
-    font-family: 'Georgia', serif;
+    font-family: 'Joan', serif;
     font-size: 2em;
-    margin-bottom: 10px;
-}
-
-/* Label styling */
-label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 0.9em;
-    color: #333;
+    margin-bottom: 60px;
 }
 
 /* Input field styling */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: calc(100% - 20px); /* Full width minus some padding */
+    width: 250px; /* Full width minus some padding */
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 50px;
@@ -64,18 +59,9 @@ input[type="password"]::placeholder {
 }
 
 /* Style for the Register button */
-input[type="submit"] {
-    background-color: #333;
-    color: white;
-    font-size: 1.2em;
-    padding: 12px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    width: 100%;
-}
 
-input[type="submit"]:hover {
+
+input[type="submit"], button:hover {
     background-color: #555;
 }
 
@@ -86,19 +72,15 @@ p {
 }
 
 /* Login button styling */
-button {
+button, input[type="submit"] {
     background-color: #333;
     color: white;
     font-size: 1em;
     padding: 10px;
     border: none;
-    border-radius: 50px;
+    border-radius: 10px;
     cursor: pointer;
-    display: block;
-    margin: 20px auto 0;
-    width: 50%;
-}
-
-button:hover {
-    background-color: #555;
+    margin: 20px 0;
+    gap: 20px;
+    width: 150px;
 }
