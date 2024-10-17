@@ -1,4 +1,4 @@
-#!/Users/carter/Documents/Group-40-CH/venv/bin/python
+#!/Users/carter/Documents/Group-40-CH/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
