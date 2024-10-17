@@ -39,10 +39,18 @@ def profile(email):
             elif password != confirm_password:
                 error_message = "Passwords do not match."
             else:
-                # Update user data in the mock database
+                # Handle email change
+                if new_email != email:
+                    del database[email]
+                    email = new_email
+                    user['email'] = new_email
+                    database[new_email] = user
+                else:
+                    user['email'] = new_email
+
+                # Update other user data 
                 user['firstName'] = first_name
                 user['lastName'] = last_name
-                user['email'] = new_email
                 user['password'] = password
 
                 # Save successful, redirect to index
