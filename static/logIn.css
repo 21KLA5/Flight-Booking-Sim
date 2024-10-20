@@ -15,14 +15,14 @@ form {
     margin-top: 20px;
     margin-bottom: 20px;
     background-color: white;
-    border-radius: 0px;
+    border-radius: 10px;
     padding: 20px 30px 30px 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 700px;
+    width: 350px;
     height: 500px
 }
 
-.form-row{
+.login-form{
     display: flex;
     align-items: center;
     margin-bottom: 15px;
@@ -30,8 +30,7 @@ form {
     gap: 20px;
 }
 
-/* Style for heading */
-h2 {
+h3 {
     text-align: center;
     font-family: 'Joan', serif;
     font-size: 2em;
@@ -52,23 +51,8 @@ input[type="password"] {
     outline: none;
 }
 
-input[type="text"]::placeholder,
-input[type="email"]::placeholder,
-input[type="password"]::placeholder {
-    color: #999;
-}
-
-/* Style for the Register button */
-
-
 input[type="submit"], button:hover {
     background-color: #555;
-}
-
-/* Styling for the additional text */
-p {
-    text-align: center;
-    font-size: 1em;
 }
 
 /* Login button styling */
@@ -84,4 +68,3 @@ button, input[type="submit"] {
     gap: 20px;
     width: 150px;
 }
-

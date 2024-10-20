@@ -5,7 +5,8 @@ app = Flask(__name__)
 #mock database
 database = {}
 
-#@app.route('/', methods=['GET', 'POST'])
+
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         user_input = request.form['user_input']
@@ -38,15 +39,27 @@ def register():
         else: 
             # Store user details in the mock database
             database[email] = {'firstName': firstName, 'lastName': lastName, 'password': password}
-            
             # Redirect to login page
             return redirect(url_for('login', email=email))
+
         
     return render_template('register.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
-    return "registration successfull"
+    if request.method == 'POST':
+        user_email = request.form['email']
+        user_password = request.form['password']
 
+        if user_email not in database:
+            
+            return render_template('login.html', errorMessage="The provided email is not registered")
+        else:
+            if (database[user_email]['password'] == user_password):
+                return redirect(url_for('index'))
+            else:
+                return render_template('login.html', errorMessage="Email and password does not match")
+
+    return render_template('login.html')
 if __name__ == '__main__':
     app.run(debug=True)
