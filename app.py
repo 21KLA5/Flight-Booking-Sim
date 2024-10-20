@@ -53,7 +53,11 @@ def login():
         if user_email not in database:
             
             return render_template('login.html', errorMessage="The provided email is not registered")
-        
+        else:
+            if (database[user_email]['password'] == user_password):
+                return redirect(url_for('index'))
+            else:
+                return render_template('login.html', errorMessage="Email and password does not match")
 
     return render_template('login.html')
 
