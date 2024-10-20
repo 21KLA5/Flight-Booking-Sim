@@ -104,7 +104,7 @@ def login():
             return render_template('login.html', errorMessage="The provided email is not registered")
         else:
             if (database[user_email]['password'] == user_password):
-                return redirect(url_for('index'))
+                return redirect(url_for('profile', email=user_email))
             else:
                 return render_template('login.html', errorMessage="Email and password does not match")
 
