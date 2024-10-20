@@ -36,3 +36,35 @@ h3 {
     font-size: 2em;
     margin-bottom: 60px;
 }
+
+/* Input field styling */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 250px; /* Full width minus some padding */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 50px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input[type="submit"], button:hover {
+    background-color: #555;
+}
+
+/* Login button styling */
+button, input[type="submit"] {
+    background-color: #333;
+    color: white;
+    font-size: 1em;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 20px 0;
+    gap: 20px;
+    width: 150px;
+}
