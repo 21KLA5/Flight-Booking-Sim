@@ -44,6 +44,18 @@ def register():
         
     return render_template('register.html')
 
+@app.route('/login', methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        user_email = request.form['email']
+        user_password = request.form['password']
+
+        if user_email not in database:
+            
+            return render_template('login.html', errorMessage="The provided email is not registered")
+        
+
+    return render_template('login.html')
 
 
 
