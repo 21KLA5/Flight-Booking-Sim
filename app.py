@@ -5,6 +5,7 @@ app = Flask(__name__)
 #mock database
 database = {}
 
+
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -60,8 +61,5 @@ def login():
                 return render_template('login.html', errorMessage="Email and password does not match")
 
     return render_template('login.html')
-
-
-
 if __name__ == '__main__':
     app.run(debug=True)
