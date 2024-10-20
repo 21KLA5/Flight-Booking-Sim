@@ -23,7 +23,9 @@
 
         </div>
 
-        
+        {% if errorMessage %}
+        <p style="color:red;">{{ errorMessage }}</p>
+        {% endif %}
         
     </form>
 
