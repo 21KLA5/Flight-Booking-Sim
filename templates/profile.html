@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='profileStyle.css') }}">
 </head>
 <body>
-    <form action="{{ url_for('profile', email=user.email) }}" method="POST">
+    <form action="{{ url_for('profile', email=email) }}" method="POST">
         <h2>Manage Profile</h2>
         <div class="form-row">
-            <input type="text" name="firstName" placeholder="First Name" value="{{ user.firstName }}"><br><br>
-            <input type="text" name="lastName" placeholder="Last Name" value="{{ user.lastName }}"><br><br>
+            <input type="text" name="firstName" placeholder="First Name" value="{{ user['firstName'] }}"><br><br>
+            <input type="text" name="lastName" placeholder="Last Name" value="{{ user['lastName'] }}"><br><br>
         </div>
-        <input type="email" name="email" placeholder="Email" value="{{ user.email }}"><br><br>
-        <input type="password" name="password" placeholder="Password" value="{{ user.password }}"><br><br>
-        <input type="password" name="confirmPass" placeholder="Confirm Password" value="{{ user.password }}"><br><br>
+        <input type="email" name="email" placeholder="Email" value="{{ email }}"><br><br>
+        <input type="password" name="password" placeholder="Password" value="{{ user['password'] }}"><br><br>
+        <input type="password" name="confirmPass" placeholder="Confirm Password" value="{{ user['password'] }}"><br><br>
 
         <div class="form-actions">
             <button type="submit" name="action" value="Save Changes">Save Changes</button>

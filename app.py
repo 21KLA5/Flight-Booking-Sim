@@ -8,7 +8,6 @@ database = {}
 
 
 @app.route('/index', methods=['GET', 'POST'])
-
 def index():
     if request.method == 'POST':
         user_input = request.form['user_input']
@@ -25,7 +24,7 @@ def profile(email):
     if request.method == 'POST':
         action = request.form.get('action')
 
-        if request.form.get('action') == 'Save Changes':
+        if action == 'Save Changes':
             first_name = request.form['firstName']
             last_name = request.form['lastName']
             new_email = request.form['email']
@@ -38,28 +37,25 @@ def profile(email):
             elif password != confirm_password:
                 error_message = "Passwords do not match."
             else:
+                error_message = ""
                 # Handle email change
                 if new_email != email:
-                    del database[email]
-                    email = new_email
-                    user['email'] = new_email
-                    database[new_email] = user
-                else:
-                    user['email'] = new_email
+                    database[new_email] = database.pop(email)   
+                    email = new_email   
 
                 # Update other user data 
-                user['firstName'] = first_name
-                user['lastName'] = last_name
-                user['password'] = password
+                database[email]['firstName'] = first_name
+                database[email]['lastName'] = last_name
+                database[email]['password'] = password
 
-                # Save successful, redirect to index
-                return redirect(url_for('index'))
+                # Save successfull return to profile
+                return redirect(url_for('profile', email=email))
 
         elif action == 'Discard Changes':
             # Discard changes and redirect to index
             return redirect(url_for('index'))
 
-    return render_template('profile.html', user=user, error_message=error_message)
+    return render_template('profile.html', user=database[email], email=email, error_message=error_message)
 
 @app.route('/', methods=['GET', 'POST'])
 def register():
@@ -88,7 +84,7 @@ def register():
             # Store user details in the mock database
             database[email] = {'firstName': firstName, 'lastName': lastName, 'password': password}
             # Redirect to login page
-            return redirect(url_for('login', email=email))
+            return redirect(url_for('login'))
 
         
     return render_template('register.html')
