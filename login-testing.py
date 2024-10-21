@@ -22,7 +22,7 @@ class LogInTestCase(unittest.TestCase):
             'password': 'password123'
         })
         self.assertEqual(response.status_code, 302)  # Should redirect
-        self.assertIn('/index', response.headers['Location'])  # Check redirection to index page
+        self.assertIn('/profile', response.headers['Location'])  # Check redirection to index page
 
     # Test login with incorrect password
     def test_login_incorrect_password(self):
