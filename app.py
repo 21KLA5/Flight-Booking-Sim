@@ -40,8 +40,9 @@ def profile(email):
                 error_message = ""
                 # Handle email change
                 if new_email != email:
-                    database[new_email] = database.pop(email)   
-                    email = new_email   
+                    database[new_email] = database.pop(email)
+                    database[new_email]['email'] = new_email  # Update the email field with new email
+                    email = new_email
 
                 # Update other user data 
                 database[email]['firstName'] = first_name
