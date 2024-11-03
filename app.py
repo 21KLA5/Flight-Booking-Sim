@@ -87,14 +87,20 @@ def register():
             return render_template('register.html', errorMessage="Passwords do not match")
 
         # Check if the username already exists in the database
-        elif email in database:
+        existing_user = users_collection.find_one({"email": email})
+        if existing_user:
             return render_template('register.html', errorMessage="email already registered")
 
-        else: 
-            # Store user details in the mock database
-            database[email] = {'firstName': firstName, 'lastName': lastName, 'password': password}
-            # Redirect to login page
-            return redirect(url_for('login'))
+        
+        # Store user details in the mock database
+        users_collection.insert_one({
+            "firstName": firstName,
+            "lastName": lastName,
+            "email": email,
+            "password": password
+        })
+        # Redirect to login page
+        return redirect(url_for('login'))
 
         
     return render_template('register.html')
