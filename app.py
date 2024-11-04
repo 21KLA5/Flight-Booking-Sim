@@ -1,10 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for
+from pymongo.mongo_client import MongoClient
 
 app = Flask(__name__)
 
 #mock database
-
 database = {}
+
+#Setting up MongoDB
+uri = "mongodb+srv://Group40-CH:3CdTLef740aHcdLK@group-40ch.icio9.mongodb.net/?retryWrites=true&w=majority&appName=Group-40CH"
+
+# Create a new client and connect to the server
+client = MongoClient(uri)
+
+db = client["user_database"]  # Database name
+users_collection = db["users"]  # Collection for storing users
 
 
 @app.route('/index', methods=['GET', 'POST'])
@@ -78,14 +87,20 @@ def register():
             return render_template('register.html', errorMessage="Passwords do not match")
 
         # Check if the username already exists in the database
-        elif email in database:
+        existing_user = users_collection.find_one({"email": email})
+        if existing_user:
             return render_template('register.html', errorMessage="email already registered")
 
-        else: 
-            # Store user details in the mock database
-            database[email] = {'firstName': firstName, 'lastName': lastName, 'password': password}
-            # Redirect to login page
-            return redirect(url_for('login'))
+        
+        # Store user details in the mock database
+        users_collection.insert_one({
+            "firstName": firstName,
+            "lastName": lastName,
+            "email": email,
+            "password": password
+        })
+        # Redirect to login page
+        return redirect(url_for('login'))
 
         
     return render_template('register.html')
@@ -96,16 +111,18 @@ def login():
         user_email = request.form['email']
         user_password = request.form['password']
 
-        if user_email not in database:
-            
-            return render_template('login.html', errorMessage="The provided email is not registered")
+        db_user = users_collection.find_one({"email": user_email})
+
+        if db_user is None:
+             return render_template('login.html', errorMessage="The provided email is not registered")
         else:
-            if (database[user_email]['password'] == user_password):
+            if db_user['password'] == user_password:
                 return redirect(url_for('profile', email=user_email))
             else:
                 return render_template('login.html', errorMessage="Email and password does not match")
 
     return render_template('login.html')
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
