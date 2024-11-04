@@ -114,8 +114,10 @@ def login():
 
         db_user = users_collection.find_one({"email": user_email})
 
+        # Checks if the entered email is registered with a user in the database 
         if db_user is None:
              return render_template('login.html', errorMessage="The provided email is not registered")
+        # Checks if the password in database matches the password entered
         else:
             if db_user['password'] == user_password:
                 return redirect(url_for('profile', email=user_email))
