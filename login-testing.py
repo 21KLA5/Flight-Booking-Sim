@@ -1,5 +1,5 @@
 import unittest
-from app import app, database  # Import the app and mock database
+from app import app, users_collection  # Import the app and mock database
 
 class LogInTestCase(unittest.TestCase):
 
@@ -7,31 +7,36 @@ class LogInTestCase(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()  # Flask's test client
         self.app.testing = True
+        users_collection.delete_many({})  # Clear users collection before each test
     
     # Test login with valid credentials
     def test_login_success(self):
         # First, register a user
-        database['terencejiang@gmail.com'] = {
+        users_collection.insert_one({
             'firstName': 'Terence',
             'lastName': 'Jiang',
+            'email': 'terencejiang@gmail.com',
             'password': 'password123'
-        }
+        })
 
         response = self.app.post('/login', data={
             'email': 'terencejiang@gmail.com',
             'password': 'password123'
         })
-        self.assertEqual(response.status_code, 302)  # Should redirect
-        self.assertIn('/profile', response.headers['Location'])  # Check redirection to index page
+        
+        # Expect a redirect to the profile page upon successful login
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/profile', response.location)  # Check redirection URL
 
     # Test login with incorrect password
     def test_login_incorrect_password(self):
-        # Register a user with known password
-        database['jackcam@gmail.com'] = {
+        # Insert a test user into MongoDB
+        users_collection.insert_one({
             'firstName': 'Jack',
             'lastName': 'Cam',
+            'email': 'jackcam@gmail.com',
             'password': 'password123'
-        }
+        })
 
         response = self.app.post('/login', data={
             'email': 'jackcam@gmail.com',
@@ -49,6 +54,9 @@ class LogInTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)  # Should stay on the login page
         self.assertIn(b'The provided email is not registered', response.data)  # Check if the error message is shown
 
+     # Tear down any modifications to the database after each test
+    def tearDown(self):
+        users_collection.delete_many({})  # Clear users collection after each test
 
 if __name__ == '__main__':
     unittest.main()

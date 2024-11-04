@@ -31,6 +31,7 @@ def index():
 def profile(email):
     user = users_collection.find_one({"email" : email})
     error_message = None
+    db_user = users_collection.find_one({"email": user})
 
     if request.method == 'POST':
         action = request.form.get('action')
@@ -66,7 +67,8 @@ def profile(email):
             # Discard changes and redirect to index
             return redirect(url_for('index'))
 
-    return render_template('profile.html', user=user, email=email, error_message=error_message)
+    return render_template('profile.html', user=db_user, email=email, error_message=error_message)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def register():
@@ -112,16 +114,20 @@ def login():
         user_email = request.form['email']
         user_password = request.form['password']
 
-        if user_email not in database:
-            
-            return render_template('login.html', errorMessage="The provided email is not registered")
+        db_user = users_collection.find_one({"email": user_email})
+
+        # Checks if the entered email is registered with a user in the database 
+        if db_user is None:
+             return render_template('login.html', errorMessage="The provided email is not registered")
+        # Checks if the password in database matches the password entered
         else:
-            if (database[user_email]['password'] == user_password):
+            if db_user['password'] == user_password:
                 return redirect(url_for('profile', email=user_email))
             else:
                 return render_template('login.html', errorMessage="Email and password does not match")
 
     return render_template('login.html')
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
