@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo.mongo_client import MongoClient
-import certifi
 
 
 app = Flask(__name__)
@@ -12,7 +11,7 @@ database = {}
 uri = "mongodb+srv://Group40-CH:3CdTLef740aHcdLK@group-40ch.icio9.mongodb.net/?retryWrites=true&w=majority&appName=Group-40CH"
 
 # Create a new client and connect to the server
-client = MongoClient(uri, tlsCAFile=certifi.where())
+client = MongoClient(uri)
 
 db = client["user_database"]  # Database name
 users_collection = db["users"]  # Collection for storing users
