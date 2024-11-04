@@ -1,17 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo.mongo_client import MongoClient
+import certifi
 
 
 app = Flask(__name__)
 
-#mock database
-database = {}
 
 #Setting up MongoDB
 uri = "mongodb+srv://Group40-CH:3CdTLef740aHcdLK@group-40ch.icio9.mongodb.net/?retryWrites=true&w=majority&appName=Group-40CH"
 
 # Create a new client and connect to the server
-client = MongoClient(uri)
+client = MongoClient(uri, tlsCAFile=certifi.where())
 
 db = client["user_database"]  # Database name
 users_collection = db["users"]  # Collection for storing users
@@ -30,7 +29,6 @@ def index():
 def profile(email):
     user = users_collection.find_one({"email" : email})
     error_message = None
-    db_user = users_collection.find_one({"email": user})
 
     if request.method == 'POST':
         action = request.form.get('action')
@@ -66,7 +64,7 @@ def profile(email):
             # Discard changes and redirect to index
             return redirect(url_for('index'))
 
-    return render_template('profile.html', user=db_user, email=email, error_message=error_message)
+    return render_template('profile.html', user=user, email=email, error_message=error_message)
 
 
 @app.route('/', methods=['GET', 'POST'])
