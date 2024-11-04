@@ -29,6 +29,7 @@ def index():
 def profile(email):
     user = database.get(email)
     error_message = None
+    db_user = users_collection.find_one({"email": user})
 
     if request.method == 'POST':
         action = request.form.get('action')
@@ -65,7 +66,7 @@ def profile(email):
             # Discard changes and redirect to index
             return redirect(url_for('index'))
 
-    return render_template('profile.html', user=database[email], email=email, error_message=error_message)
+    return render_template('profile.html', user=db_user, email=email, error_message=error_message)
 
 @app.route('/', methods=['GET', 'POST'])
 def register():
