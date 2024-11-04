@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo.mongo_client import MongoClient
+import certifi
+
 
 app = Flask(__name__)
 
@@ -10,7 +12,7 @@ database = {}
 uri = "mongodb+srv://Group40-CH:3CdTLef740aHcdLK@group-40ch.icio9.mongodb.net/?retryWrites=true&w=majority&appName=Group-40CH"
 
 # Create a new client and connect to the server
-client = MongoClient(uri)
+client = MongoClient(uri, tlsCAFile=certifi.where())
 
 db = client["user_database"]  # Database name
 users_collection = db["users"]  # Collection for storing users
@@ -27,7 +29,7 @@ def index():
 # Profile Management route
 @app.route('/profile/<email>', methods=['GET', 'POST'])
 def profile(email):
-    user = database.get(email)
+    user = users_collection.find_one({"email" : email})
     error_message = None
 
     if request.method == 'POST':
@@ -48,24 +50,23 @@ def profile(email):
             else:
                 error_message = ""
                 # Handle email change
-                if new_email != email:
-                    database[new_email] = database.pop(email)
-                    database[new_email]['email'] = new_email  # Update the email field with new email
-                    email = new_email
+                # Update the user's information
+                update_fields = {
+                    "firstName": first_name,
+                    "lastName": last_name,
+                    "email": new_email,
+                    "password": password
+                }
+                users_collection.update_one({"email": email}, {"$set": update_fields})
 
-                # Update other user data 
-                database[email]['firstName'] = first_name
-                database[email]['lastName'] = last_name
-                database[email]['password'] = password
-
-                # Save successfull return to profile
-                return redirect(url_for('profile', email=email))
+                # Redirect back to the profile page with the updated email
+                return redirect(url_for('profile', email=new_email))
 
         elif action == 'Discard Changes':
             # Discard changes and redirect to index
             return redirect(url_for('index'))
 
-    return render_template('profile.html', user=database[email], email=email, error_message=error_message)
+    return render_template('profile.html', user=user, email=email, error_message=error_message)
 
 @app.route('/', methods=['GET', 'POST'])
 def register():
