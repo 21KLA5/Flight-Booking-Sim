@@ -17,14 +17,17 @@
         <div class="login-form">
             <input type="password" id="password" name="password" placeholder="Password">
         </div>
+        
+        <div class="login-form">
+            {% if errorMessage %}
+            <p style="color:red;">{{ errorMessage }}</p>
+            {% endif %}
+        </div>
+        
 
         <div class="login-form">
             <input type="submit" value="Login">
         </div>
-
-        {% if errorMessage %}
-        <p style="color:red;">{{ errorMessage }}</p>
-        {% endif %}
         
         <div class="login-form">
             <a href="{{ url_for('register') }}" type="submit" >Go to Register</a>
