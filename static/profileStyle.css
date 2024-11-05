@@ -7,6 +7,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    position: relative;
 }
 
 form {
@@ -28,7 +29,7 @@ h2 {
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
@@ -44,7 +45,7 @@ input[type="password"]::placeholder {
     color: #999;
 }
 
-button {
+button, .clear-bookings-button {
     background-color: #0004ff;
     color: white;
     padding: 12px;
@@ -54,11 +55,49 @@ button {
     width: 48%;
 }
 
-button:hover {
+button:hover, .clear-bookings-button:hover {
     background-color: #0003a0;
 }
 
 .form-actions {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.logout-button, .clear-bookings-button {
+    text-decoration: none;
+    text-align: center;
+}
+
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #ff0000;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.clear-bookings-button {
+    display: block;
+    width: 95%;
+    margin-top: 15px auto2;
+    background-color: #ff8c00;
+    text-align: center;
+}
+
+.logout-button:hover {
+    background-color: #cc0000;
+}
+
+.clear-bookings-button:hover {
+    background-color: #e67e00;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
 }
