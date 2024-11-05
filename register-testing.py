@@ -16,7 +16,7 @@ class RegisterTestCase(unittest.TestCase):
 
     # Test case where all fields are filled correctly (successful registration)
     def test_successful_registration(self):
-        response = self.app.post('/', data={
+        response = self.app.post('/register', data={
             'firstName': 'Kavin',
             'lastName': 'Arasu',
             'email': 'johndoe@gmail.com',
@@ -28,7 +28,7 @@ class RegisterTestCase(unittest.TestCase):
 
     # Test case for when passwords do not match
     def test_password_mismatch(self):
-        response = self.app.post('/', data={
+        response = self.app.post('/register', data={
             'firstName': 'John',
             'lastName': 'Doe',
             'email': 'johndoe@example.com',
@@ -40,7 +40,7 @@ class RegisterTestCase(unittest.TestCase):
 
     # Test case for missing fields (empty email)
     def test_missing_field(self):
-        response = self.app.post('/', data={
+        response = self.app.post('/register', data={
             'firstName': 'John',
             'lastName': 'Doe',
             'email': '',
@@ -55,7 +55,7 @@ class RegisterTestCase(unittest.TestCase):
         # First, add a user to the MongoDB collection
         users_collection.insert_one({'firstName': 'John', 'lastName': 'Doe', 'email': 'johndoe@example.com', 'password': 'password123'})
 
-        response = self.app.post('/', data={
+        response = self.app.post('/register', data={
             'firstName': 'John',
             'lastName': 'Doe',
             'email': 'johndoe@example.com',
