@@ -36,7 +36,9 @@ def flightSearch():
                 'from': from_city,
                 'to': to_city
             }
-            session['trip_type'] = request.form['flightType']
+            session['trip_type'] = flight_type
+            session['to'] = from_city
+            session['from'] = to_city
 
     
     return render_template('flightSearch.html', user=user, email=email, flight_details=flight_details)
@@ -160,7 +162,9 @@ def save_seat_selection():
         "user_email": session['user_email'],
         "departureSeat": data['departureSeat'],
         "returnSeat": data.get('returnSeat'),
-        "trip_type": session.get('trip_type', 'one_way')
+        "trip_type": session.get('trip_type', 'one_way'),
+        "to_city": session.get('to'),
+        "from_city": session.get('from')
     }
     bookings_collection.insert_one(booking)
     return jsonify({"success": True, "userEmail": session['user_email']})
