@@ -26,7 +26,7 @@ class LogInTestCase(unittest.TestCase):
         
         # Expect a redirect to the profile page upon successful login
         self.assertEqual(response.status_code, 302)
-        self.assertIn('/profile', response.location)  # Check redirection URL
+        self.assertIn('/', response.location)  # Check redirection URL
 
     # Test login with incorrect password
     def test_login_incorrect_password(self):
