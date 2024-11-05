@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='flightSearch.css') }}">
+</head>
+<body>
+    {% if not user%}
+        <div class="top-right-buttons">
+            <button onclick="window.location.href='/login'">Log In</button>
+            <button onclick="window.location.href='/register'">Register</button>
+        </div>
+    {% else %}
+        <div class="top-right-buttons">
+            <button onclick="window.location.href='/logout'">Log Out</button>  <!-- Optional Log Out button -->
+        </div>
+    {% endif %}
+
+    {% if user%}
+        <h1>Welcome, {{ user['firstName'] }} {{ user['lastName'] }}</h1>
+        <div class="profile management"></div>
+    {% endif %}
+
+    <h1>Flight Search</h1>
+    
+</body>
+</html>
