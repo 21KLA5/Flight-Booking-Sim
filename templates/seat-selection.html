@@ -19,14 +19,14 @@
         <div class="info-panel">
             <h1>Flight Information</h1>
             <div class="passenger-info">
-                <h2>Passenger: <span id="passengerName">John Doe</span></h2>
+                <h2>Passenger: <span id="passengerName">{{ user['firstName'] }} {{ user['lastName'] }}</span></h2>
             </div>
-            <div id="departureInfo" class="trip-info">
-                <h3>Departure</h3>
+            <div class="trip-info">
+                <h3>Departure - <span>{{ from_city }} to {{ to_city }}</span></h3>
                 <p>Seat Selection: <span id="departureSeatSelection">Not selected</span></p>
             </div>
             <div id="returnInfo" class="trip-info">
-                <h3>Return</h3>
+                <h3>Return - <span>{{ to_city }} to {{ from_city}}</span></h3>
                 <p>Seat Selection: <span id="returnSeatSelection">Not selected</span></p>
             </div>
             <div class="action-buttons">
