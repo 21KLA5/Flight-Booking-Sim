@@ -133,3 +133,18 @@ input[type="submit"]:hover {
     font-size: 22px;
     margin-bottom: 10px;
 }
+
+.flight-details button {
+    background-color: #28a745; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 20px; 
+}
+
+.flight-details button:hover {
+    background-color: #218838; 
+}

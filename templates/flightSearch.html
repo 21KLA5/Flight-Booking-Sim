@@ -34,13 +34,13 @@
         <form action="/" method="POST">
             <label for="flightType">Choose your flight type:</label><br>
             <span>
-                <input type="radio" id="oneWay" name="flightType" value="oneWay" checked>
-                <label for="oneWay">One-Way</label><br>
+                <input type="radio" id="One-Way" name="flightType" value="one_way" checked>
+                <label for="One-Way">One-Way</label><br>
             </span>
             
             <span>
-                <input type="radio" id="roundTrip" name="flightType" value="roundTrip">
-                <label for="roundTrip">Round Trip</label><br><br>
+                <input type="radio" id="Round-Trip" name="flightType" value="round_trip">
+                <label for="Round-Trip">Round Trip</label><br><br>
             </span>
 
             <!-- Input fields for flight details -->
@@ -63,6 +63,7 @@
             <p><strong>To:</strong> {{ flight_details['to'] }}</p>
             <p><strong>Flight Number:</strong> ABC123</p>
             <p><strong>Price:</strong> $200</p>
+            <button onclick="window.location.href='/seat-selection'">Select Flight</button>
             {% endif %}
         </div>
 

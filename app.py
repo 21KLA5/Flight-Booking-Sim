@@ -36,6 +36,7 @@ def flightSearch():
                 'from': from_city,
                 'to': to_city
             }
+            session['trip_type'] = request.form['flightType']
 
     
     return render_template('flightSearch.html', user=user, email=email, flight_details=flight_details)
