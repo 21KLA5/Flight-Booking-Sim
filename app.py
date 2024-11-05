@@ -1,20 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from pymongo.mongo_client import MongoClient
 import certifi
 
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Set a secret key for session management
 
-
-#Setting up MongoDB
+# Setting up MongoDB
 uri = "mongodb+srv://Group40-CH:3CdTLef740aHcdLK@group-40ch.icio9.mongodb.net/?retryWrites=true&w=majority&appName=Group-40CH"
 
 # Create a new client and connect to the server
 client = MongoClient(uri, tlsCAFile=certifi.where())
-
-db = client["user_database"]  # Database name
-users_collection = db["users"]  # Collection for storing users
-
+db = client["user_database"]
+users_collection = db["users"]
+bookings_collection = db["bookings"]
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -27,28 +26,22 @@ def index():
 # Profile Management route
 @app.route('/profile/<email>', methods=['GET', 'POST'])
 def profile(email):
-    user = users_collection.find_one({"email" : email})
+    user = users_collection.find_one({"email": email})
     error_message = None
-
     if request.method == 'POST':
         action = request.form.get('action')
-
         if action == 'Save Changes':
             first_name = request.form['firstName']
             last_name = request.form['lastName']
             new_email = request.form['email']
             password = request.form['password']
             confirm_password = request.form['confirmPass']
-
-            # Validation: Ensure no field is blank and passwords match
             if not first_name or not last_name or not new_email or not password or not confirm_password:
                 error_message = "All fields must be filled."
             elif password != confirm_password:
                 error_message = "Passwords do not match."
             else:
                 error_message = ""
-                # Handle email change
-                # Update the user's information
                 update_fields = {
                     "firstName": first_name,
                     "lastName": last_name,
@@ -56,14 +49,9 @@ def profile(email):
                     "password": password
                 }
                 users_collection.update_one({"email": email}, {"$set": update_fields})
-
-                # Redirect back to the profile page with the updated email
                 return redirect(url_for('profile', email=new_email))
-
         elif action == 'Discard Changes':
-            # Discard changes and redirect to index
             return redirect(url_for('index'))
-
     return render_template('profile.html', user=user, email=email, error_message=error_message)
 
 
@@ -92,7 +80,7 @@ def register():
             return render_template('register.html', errorMessage="email already registered")
 
         
-        # Store user details in the mock database
+        # Store user details in the database
         users_collection.insert_one({
             "firstName": firstName,
             "lastName": lastName,
@@ -115,16 +103,67 @@ def login():
 
         # Checks if the entered email is registered with a user in the database 
         if db_user is None:
-             return render_template('login.html', errorMessage="The provided email is not registered")
-        # Checks if the password in database matches the password entered
+            return render_template('login.html', errorMessage="The provided email is not registered")
         else:
             if db_user['password'] == user_password:
-                return redirect(url_for('profile', email=user_email))
+                session['user_email'] = user_email
+                return redirect(url_for('seat_selection'))
             else:
                 return render_template('login.html', errorMessage="Email and password does not match")
-
     return render_template('login.html')
-        
+
+@app.route('/seat-selection', methods=['GET'])
+def seat_selection():
+    if 'user_email' not in session:
+        return redirect(url_for('login'))
+    user = users_collection.find_one({"email": session['user_email']})
+    trip_type = session.get('trip_type', 'one_way')
+    return render_template('seat-selection.html', user=user, trip_type=trip_type)
+
+@app.route('/get-trip-info', methods=['GET'])
+def get_trip_info():
+    if 'user_email' not in session:
+        return jsonify({"error": "User not logged in"}), 401
+    user = users_collection.find_one({"email": session['user_email']})
+    trip_type = session.get('trip_type', 'one_way')
+    return jsonify({
+        "isRoundTrip": trip_type == 'round_trip',
+        "passengerName": f"{user['firstName']} {user['lastName']}",
+        "tripType": trip_type
+    })
+
+@app.route('/save-seat-selection', methods=['POST'])
+def save_seat_selection():
+    if 'user_email' not in session:
+        return jsonify({"success": False, "error": "User not logged in"}), 401
+    data = request.json
+    booking = {
+        "user_email": session['user_email'],
+        "departureSeat": data['departureSeat'],
+        "returnSeat": data.get('returnSeat'),
+        "trip_type": session.get('trip_type', 'one_way')
+    }
+    bookings_collection.insert_one(booking)
+    return jsonify({"success": True, "userEmail": session['user_email']})
+
+@app.route('/set-trip-type/<trip_type>')
+def set_trip_type(trip_type):
+    session['trip_type'] = trip_type
+    return redirect(url_for('seat_selection'))
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+
+@app.route('/clear-bookings')
+def clear_bookings():
+    if 'user_email' not in session:
+        return redirect(url_for('login'))
+    user_email = session['user_email']
+    bookings_collection.delete_many({"user_email": user_email})
+    return redirect(url_for('profile', email=user_email))
 
 if __name__ == '__main__':
     app.run(debug=True)
