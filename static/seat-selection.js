@@ -140,5 +140,5 @@ document.getElementById('proceed-button').addEventListener('click', () => {
 });
 
 document.getElementById('back-button').addEventListener('click', () => {
-    window.location.href = '/flight-search';
+    window.location.href = '/flightSearch';
 });
