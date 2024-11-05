@@ -21,7 +21,10 @@
             <button type="submit" name="action" value="Save Changes">Save Changes</button>
             <button type="submit" name="action" value="Discard Changes">Discard Changes</button>
         </div>
+        
+        <a href="{{ url_for('booking_history') }}" class="bookings-history-button">Booking History</a>
         <a href="{{ url_for('clear_bookings') }}" class="clear-bookings-button">Clear Bookings</a>
+
         {% if error_message %}
         <div class="error-message">{{ error_message }}</div>
         {% endif %}
