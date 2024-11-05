@@ -14,16 +14,61 @@
         </div>
     {% else %}
         <div class="top-right-buttons">
-            <button onclick="window.location.href='/logout'">Log Out</button>  <!-- Optional Log Out button -->
+            <button onclick="window.location.href='/logout'">Log Out</button>
+            <button onclick="window.location.href='/profile/{{ email }}'">Manage profile</button>
         </div>
     {% endif %}
+    
 
-    {% if user%}
-        <h1>Welcome, {{ user['firstName'] }} {{ user['lastName'] }}</h1>
-        <div class="profile management"></div>
-    {% endif %}
+    <div class="left">
+        {% if user%}
+            <h1>Welcome, {{ user['firstName'] }} {{ user['lastName'] }}</h1>
+        {% else %}
+            <h1>Please sign in to search for Flights</h1>
+        {%endif%}
+    </div>
 
-    <h1>Flight Search</h1>
+
+    <div class="container">
+            <!-- Flight type selection form -->
+        <form action="/" method="POST">
+            <label for="flightType">Choose your flight type:</label><br>
+            <span>
+                <input type="radio" id="oneWay" name="flightType" value="oneWay" checked>
+                <label for="oneWay">One-Way</label><br>
+            </span>
+            
+            <span>
+                <input type="radio" id="roundTrip" name="flightType" value="roundTrip">
+                <label for="roundTrip">Round Trip</label><br><br>
+            </span>
+
+            <!-- Input fields for flight details -->
+            <label for="from">From:</label>
+            <input type="text" id="from" name="from" required><br><br>
+
+            <label for="to">To:</label>
+            <input type="text" id="to" name="to" required><br><br>
+
+            <input type="submit" value="Search Flights">
+        </form>
+
+
+
+        <div class="flightCard">
+            {% if flight_details %}
+            <h2>Mock Flight Available</h2>
+            <p><strong>Flight Type:</strong> {{ flight_details['flight_type'] }}</p>
+            <p><strong>From:</strong> {{ flight_details['from'] }}</p>
+            <p><strong>To:</strong> {{ flight_details['to'] }}</p>
+            <p><strong>Flight Number:</strong> ABC123</p>
+            <p><strong>Price:</strong> $200</p>
+            {% endif %}
+        </div>
+
+    </div>
+    
+    
     
 </body>
 </html>

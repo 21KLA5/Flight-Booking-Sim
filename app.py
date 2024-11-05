@@ -18,10 +18,27 @@ bookings_collection = db["bookings"]
 @app.route('/', methods=['GET', 'POST'])
 def flightSearch():
     user = None
+    email = None
+    flight_details = None
+
     if session:
         email = session['user_email']
         user = users_collection.find_one({"email": email})
-    return render_template('flightSearch.html', user=user)
+
+        if request.method == 'POST':
+            flight_type = request.form['flightType']
+            from_city = request.form['from']
+            to_city = request.form['to']
+
+            # Create mock flight details
+            flight_details = {
+                'flight_type': flight_type,
+                'from': from_city,
+                'to': to_city
+            }
+
+    
+    return render_template('flightSearch.html', user=user, email=email, flight_details=flight_details)
 
 
 # Profile Management route
@@ -155,7 +172,7 @@ def set_trip_type(trip_type):
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('login'))
+    return redirect(url_for('flightSearch'))
 
 
 @app.route('/clear-bookings')
