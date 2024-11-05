@@ -37,8 +37,8 @@ def flightSearch():
                 'to': to_city
             }
             session['trip_type'] = flight_type
-            session['to'] = from_city
-            session['from'] = to_city
+            session['from'] = from_city
+            session['to'] = to_city
 
     
     return render_template('flightSearch.html', user=user, email=email, flight_details=flight_details)
@@ -139,7 +139,9 @@ def seat_selection():
         return redirect(url_for('login'))
     user = users_collection.find_one({"email": session['user_email']})
     trip_type = session.get('trip_type', 'one_way')
-    return render_template('seat-selection.html', user=user, trip_type=trip_type)
+    from_city = session.get('from', 'Unknown')
+    to_city = session.get('to', 'Unknown')
+    return render_template('seat-selection.html', user=user, trip_type=trip_type, from_city=from_city, to_city=to_city)
 
 @app.route('/get-trip-info', methods=['GET'])
 def get_trip_info():
@@ -169,10 +171,6 @@ def save_seat_selection():
     bookings_collection.insert_one(booking)
     return jsonify({"success": True, "userEmail": session['user_email']})
 
-@app.route('/set-trip-type/<trip_type>')
-def set_trip_type(trip_type):
-    session['trip_type'] = trip_type
-    return redirect(url_for('seat_selection'))
 
 @app.route('/logout')
 def logout():
