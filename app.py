@@ -186,5 +186,14 @@ def clear_bookings():
     bookings_collection.delete_many({"user_email": user_email})
     return redirect(url_for('profile', email=user_email))
 
+@app.route('/booking-history')
+def booking_history():
+    if 'user_email' not in session:
+        return redirect(url_for('login'))
+    
+    user_email = session['user_email']
+    bookings = bookings_collection.find({"user_email": user_email})
+    return render_template('booking-history.html', bookings=bookings)
+
 if __name__ == '__main__':
     app.run(debug=True)

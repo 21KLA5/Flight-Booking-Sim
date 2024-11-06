@@ -55,6 +55,16 @@ button, .clear-bookings-button {
     width: 48%;
 }
 
+button, .bookings-history-button {
+    background-color: #0004ff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 48%;
+}
+
 button:hover, .clear-bookings-button:hover {
     background-color: #0003a0;
 }
@@ -65,7 +75,7 @@ button:hover, .clear-bookings-button:hover {
     margin-bottom: 15px;
 }
 
-.logout-button, .clear-bookings-button {
+.logout-button, .clear-bookings-button, .bookings-history-button {
     text-decoration: none;
     text-align: center;
 }
@@ -86,6 +96,18 @@ button:hover, .clear-bookings-button:hover {
     margin-top: 15px auto2;
     background-color: #ff8c00;
     text-align: center;
+}
+
+.bookings-history-button {
+    display: block;
+    width: 95%;
+    margin-bottom: 15px;
+    background-color: #0004ff;
+    text-align: center;
+}
+
+.bookings-history-button:hover {
+    background-color: #0003a0;
 }
 
 .logout-button:hover {
