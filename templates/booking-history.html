@@ -16,7 +16,6 @@
             {% for booking in bookings %}
             <div class="booking-card">
                 <div class="card-header">
-                    <img src="airline-logo.png" alt="Airline Logo"> <!-- Update with actual logo path -->
                 </div>
                 <div class="card-content">
                     <div class="flight-icon">✈️</div>
@@ -28,7 +27,7 @@
                         {% if booking['trip_type'] == 'round_trip' %}
                         <p><strong>Return Seat:</strong> {{ booking['returnSeat'] }}</p>
                         {% endif %}
-                        <p><strong>Boarding:</strong> Terminal 1</p> <!-- Update with actual terminal -->
+                        <p><strong>Boarding:</strong> Terminal 1</p> 
                     </div>
                 </div>
             </div>
