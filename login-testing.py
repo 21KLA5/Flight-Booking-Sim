@@ -54,9 +54,24 @@ class LogInTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)  # Should stay on the login page
         self.assertIn(b'The provided email is not registered', response.data)  # Check if the error message is shown
 
+    # Test login with mismatched credentials
+    def test_invalid_login(self):
+        response = self.app.post('/login', data={
+            'email': 'wrong@email.com',
+            'password': 'wrongpass'
+        })
+        self.assertEqual(response.status_code, 200)
+
+    # Test login with missing fields
+    def test_missing_fields(self):
+        response = self.app.post('/login', data={
+            'email': 'test@test.com'
+        })
+        self.assertEqual(response.status_code, 400)
+
      # Tear down any modifications to the database after each test
     def tearDown(self):
         users_collection.delete_many({})  # Clear users collection after each test
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main() # pragma: no cover
