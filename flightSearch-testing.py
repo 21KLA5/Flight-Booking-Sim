@@ -36,9 +36,6 @@ class FlightSearchTestCase(unittest.TestCase):
             'to': 'Los Angeles'
         })
 
-        # Print response data if not OK for debugging
-        if response.status_code != 200:
-            print("Response Data:", response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Mock Flight Available', response.data)  # Check if mock flight details are shown
@@ -51,9 +48,6 @@ class FlightSearchTestCase(unittest.TestCase):
             'to': 'Miami'
         })
 
-        # Print response data if not OK for debugging
-        if response.status_code != 200:
-            print("Response Data:", response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Mock Flight Available', response.data)  # Check if mock flight details are shown
