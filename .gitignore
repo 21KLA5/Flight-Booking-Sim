@@ -1,1 +1,9 @@
 venv/
+__pycache__/seat-selection-testing.cpython-310.pyc
+__pycache__/register-testing.cpython-310.pyc
+__pycache__/profile-testing.cpython-310.pyc
+__pycache__/login-testing.cpython-310.pyc
+__pycache__/flightSearch-testing.cpython-310.pyc
+__pycache__/booking-history-testing.cpython-310.pyc
+__pycache__/app.cpython-310.pyc
+.coverage
