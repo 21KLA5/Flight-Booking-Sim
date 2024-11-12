@@ -71,4 +71,4 @@ class RegisterTestCase(unittest.TestCase):
         users_collection.delete_many({})
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main() # pragma: no cover 
