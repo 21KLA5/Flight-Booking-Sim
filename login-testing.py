@@ -74,4 +74,4 @@ class LogInTestCase(unittest.TestCase):
         users_collection.delete_many({})  # Clear users collection after each test
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main() # pragma: no cover
