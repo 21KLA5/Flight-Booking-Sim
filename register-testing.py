@@ -1,6 +1,6 @@
 import unittest
 from flask import Flask
-from app import app, users_collection  # Ensure this imports your Flask app and MongoDB collection
+from app import app, users_collection  
 
 class RegisterTestCase(unittest.TestCase):
     
