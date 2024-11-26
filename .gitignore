@@ -1,4 +1,6 @@
 venv/
+__pycache__/
+*.py[cod]
 __pycache__/seat-selection-testing.cpython-310.pyc
 __pycache__/register-testing.cpython-310.pyc
 __pycache__/profile-testing.cpython-310.pyc
