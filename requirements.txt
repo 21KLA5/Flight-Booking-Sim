@@ -6,3 +6,5 @@ MarkupSafe==3.0.1
 Werkzeug==2.0.1
 pymongo==4.5.0
 certifi==2024.8.30
+selenium==4.12.0
+webdriver-manager==4.0.0
