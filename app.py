@@ -195,5 +195,5 @@ def booking_history():
     bookings = bookings_collection.find({"user_email": user_email})
     return render_template('booking-history.html', bookings=bookings)
 
-if __name__ == '__main__':
-    app.run(debug=True) # pragma: no cover 
+if __name__ == "__main__":
+    app.run(port=5100, debug=True) # pragma: no cover 

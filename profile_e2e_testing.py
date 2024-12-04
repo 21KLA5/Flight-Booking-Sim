@@ -5,20 +5,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from app import app, users_collection, bookings_collection
-import time
-import os
 
-# This code is only needed if webdriver is already installed on the system
-'''
-CHROMEDRIVER_PATH = os.getenv('CHROMEDRIVER_PATH')
-service = Service(CHROMEDRIVER_PATH)
-driver = webdriver.Chrome(service=service)
-'''
-
-# Set up the WebDriver
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
-# URL of Flask app
+# Base URL of your Flask app
 BASE_URL = "http://127.0.0.1:5000"
 
 # Test data for registration and login
@@ -34,7 +24,6 @@ test_user = {
 def clear_mongodb_database():
     # Clear the relevant collections
     users_collection.delete_many({})
-    bookings_collection.delete_many({})
     print("MongoDB database cleared!")
 
 clear_mongodb_database()
@@ -42,7 +31,7 @@ clear_mongodb_database()
 try:
     # 1. Test Registration
     driver.get(f"{BASE_URL}/register")
-
+    
     # Fill out the registration form
     driver.find_element(By.NAME, "firstName").send_keys(test_user["firstName"])
     driver.find_element(By.NAME, "lastName").send_keys(test_user["lastName"])
@@ -59,7 +48,7 @@ try:
 
     # 2. Test Login
     driver.get(f"{BASE_URL}/login")
-
+    
     # Fill out the login form
     driver.find_element(By.NAME, "email").send_keys(test_user["email"])
     driver.find_element(By.NAME, "password").send_keys(test_user["password"])
@@ -71,31 +60,55 @@ try:
     WebDriverWait(driver, 10).until(EC.url_contains("/"))
     print("Login test passed!")
 
-    # Add a booking for the test user
-    booking = {
-        "user_email": test_user["email"],
-        "departureSeat": "12A",
-        "returnSeat": "14B",
-        "trip_type": "round_trip",
-        "to_city": "CityA",
-        "from_city": "CityB"
+    # 3. Test Profile Management
+    # Navigate to profile page
+    driver.get(f"{BASE_URL}/profile/{test_user['email']}")
+    
+    # Wait for the profile form to load
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.NAME, "firstName"))
+    )
+    
+    # Test updating profile information
+    new_user_data = {
+        "firstName": "Johnny",
+        "lastName": "Smith",
+        "email": "johnnysmith@example.com",
+        "password": "newpassword123",
+        "confirmPass": "newpassword123"
     }
-    bookings_collection.insert_one(booking)
-    print("Test booking added!")
-
-    # 3. Test Booking History
-    driver.get(f"{BASE_URL}/booking-history")
-
-    # Wait for the booking history page to load
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "container")))
-
-    # Verify the booking history content
-    assert "Booking History" in driver.page_source
-    print("Booking history test passed!")
+    
+    # Fill out the profile update form
+    driver.find_element(By.NAME, "firstName").clear()
+    driver.find_element(By.NAME, "firstName").send_keys(new_user_data["firstName"])
+    driver.find_element(By.NAME, "lastName").clear()
+    driver.find_element(By.NAME, "lastName").send_keys(new_user_data["lastName"])
+    driver.find_element(By.NAME, "email").clear()
+    driver.find_element(By.NAME, "email").send_keys(new_user_data["email"])
+    driver.find_element(By.NAME, "password").clear()
+    driver.find_element(By.NAME, "password").send_keys(new_user_data["password"])
+    driver.find_element(By.NAME, "confirmPass").clear()
+    driver.find_element(By.NAME, "confirmPass").send_keys(new_user_data["confirmPass"])
+    
+    # Click Save Changes button
+    save_button = driver.find_element(By.XPATH, "//button[@value='Save Changes']")
+    save_button.click()
+    
+    # Wait for profile update to complete
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.NAME, "firstName"))
+    )
+    
+    # Verify the changes
+    updated_first_name = driver.find_element(By.NAME, "firstName").get_attribute("value")
+    updated_email = driver.find_element(By.NAME, "email").get_attribute("value")
+    assert updated_first_name == new_user_data["firstName"]
+    assert updated_email == new_user_data["email"]
+    
+    print("Profile management test passed!")
 
 except Exception as e:
     print(f"Test failed: {e}")
-
 finally:
     # Clean up
     driver.quit()
