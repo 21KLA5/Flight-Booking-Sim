@@ -5,6 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from app import app, users_collection, bookings_collection
+import time
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
@@ -71,6 +72,8 @@ try:
     )
     
     # Test departure seat selection
+    # Add explicit wait for the JavaScript to create seats
+    time.sleep(2)  # Give time for seats to be generated
     departure_seat = driver.find_element(By.CSS_SELECTOR, "#departureSeatGrid .seat-available")
     departure_seat.click()
     

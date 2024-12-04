@@ -196,4 +196,4 @@ def booking_history():
     return render_template('booking-history.html', bookings=bookings)
 
 if __name__ == "__main__":
-    app.run(port=5100, debug=True) # pragma: no cover 
+    app.run(debug=True) # pragma: no cover 
